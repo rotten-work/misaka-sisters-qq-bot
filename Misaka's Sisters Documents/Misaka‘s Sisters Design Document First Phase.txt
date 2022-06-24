@@ -57,20 +57,20 @@ Spring Boot + React
 Object-oriented programming
 Data-oriented design & Functional programming
 
-工作流程
-项目组成员使用Gitflow工作流：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-非项目组成员使用Forking工作：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
-
 个人推荐第二种，不过也不反对面向对象。建议阅读下面材料：
 https://stackoverflow.com/questions/1641580/what-is-data-oriented-design
 https://gamesfromwithin.com/data-oriented-design
 https://www.geeksforgeeks.org/functional-programming-paradigm/
 
+工作流程
+项目组成员使用Gitflow工作流：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+非项目组成员使用Forking工作流：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
 编码风格
 Python: https://peps.python.org/pep-0008/
 
 环境配置推荐anaconda + poetry
-编辑器推荐vscode
+编辑器推荐Visual Studio Code
 
 自然语言处理（NLP）：
 Miaska Writer
