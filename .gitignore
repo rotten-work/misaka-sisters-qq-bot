@@ -1,0 +1,3 @@
+*.pyc
+/MisakaSisterQQBot/poetry.lock
+/MisakaSisterQQBot/pyproject.toml

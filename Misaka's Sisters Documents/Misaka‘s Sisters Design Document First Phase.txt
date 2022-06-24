@@ -1,0 +1,81 @@
+宗旨：
+项目属性：非盈利，御坂妹妹不属于任何个体，项目组只是发起者，御坂妹妹属于二创社区和所有某系列爱好者。（商业活动仅限与IP方联动，项目积累的经验，技术可以单独拿出去利用，项目组不管）
+
+设计宗旨：每个御坂妹妹，都要活出，自己的样子
+
+御坂妹妹聊天bot最大特色：开源，忠于原著，数据驱动，神经网络辅助驱动，社区共同开发完善与编辑数据
+
+第一版必有功能：
+猫图识别，看到猫图后御坂妹妹会说可爱（神经网络识别）
+简单问好。若有人@御坂妹妹说你好，御坂妹妹也会说你好
+复读（御坂不知发生了啥，还是跟着复读了）
+早安，晚安，自动隐身，睡觉时@时会返回zzz
+认人。首次@御坂妹妹，御坂妹妹会询问对方姓名。对方介绍自己后，御坂妹妹会记录对方姓名，与对方QQ号关联，记录到数据库。（重要，首个测试数据存储系统的简单功能）
+检体番号（像原作里那样，用固定的询问方式可以询问出每个妹妹的检体番号，需要数据库关联每个检体番号的独有数据和qq号）
+猴版颜艺系统。比如问好的时候一张简单的图片。图片长宽大概300到400像素
+
+优先级一般
+完善版问好。只跟认识的人问好。如果不认识，会先问对方是谁
+完善版的颜艺系统。对说的话进行AI情感分析，然后配对应的颜艺表情图片
+每个问答多个配置（像传统即时战略单位回馈那样）
+节日特殊行为（清明节集体祭奠死去的妹妹，集体为美琴过生日等）
+相遇互报检体番号
+御坂妹妹的性格内向，偏向被动交互
+各个功能可以随时在私聊和群聊中开关
+与妹妹聊天。私聊或者群里@。不过妹妹像人一样，有工作，回复有频率，不会一直聊，最多聊几句就会以“有事“为理由离开。（也许下班了时间更多？）
+
+优化，debug可以使用的偷鸡技巧：御坂网络计算中
+超管模式：打印调试log，开关功能等
+
+低优先级
+神秘密码彩蛋，显示开发组q群号
+用户可以教御坂妹妹固定问答（御坂妹妹缺乏学习装置之外的知识，尤其是感性方面的）
+
+超低优先级
+qq空间运营，御坂妹妹偶尔发动态（每个妹妹最好不同）
+学园都市漫游（类似旅行青蛙的功能）
+御坂御坂的引入，御坂御坂性格开朗，会主动搭话
+若下线维护，御坂妹妹维护中。。。
+番外个体。不带脏字的脏话连篇。
+多个御坂妹妹在群里可以接龙
+
+工作制度：
+摆烂工作制。无工资，无奖金，无福利，无工期。
+需求全部以文档和GitHub的issues或网站的形式贴到网上。喜欢执行的可以领自己喜欢的功能做或是修bugs；喜欢但没时间执行的欢迎提供建设性建议和解决方案，指导执行者完成功能；不会写代码的可以提供内容和编辑数据；看热闹的可以多玩玩机器人，反馈bugs，提出新的好玩的需求和功能；即使躺平，也欢迎时不时在群里吹个牛逼，交流交流游戏动漫等有趣的话题。就是这样~
+
+重要参考资料
+QQ Bot框架：
+https://graiax.cn/
+优秀QQ Bot实现参考：
+https://hibikier.github.io/zhenxun_bot/
+https://graiax.cn/appendix/awesome_bot.html （可重点看ABot和BBot）
+
+Web应用框架
+Spring Boot + React
+
+编程范式
+Object-oriented programming
+Data-oriented design & Functional programming
+
+工作流程
+项目组成员使用Gitflow工作流：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+非项目组成员使用Forking工作：https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
+个人推荐第二种，不过也不反对面向对象。建议阅读下面材料：
+https://stackoverflow.com/questions/1641580/what-is-data-oriented-design
+https://gamesfromwithin.com/data-oriented-design
+https://www.geeksforgeeks.org/functional-programming-paradigm/
+
+编码风格
+Python: https://peps.python.org/pep-0008/
+
+环境配置推荐anaconda + poetry
+编辑器推荐vscode
+
+自然语言处理（NLP）：
+Miaska Writer
+https://github.com/pass-lin/misaka-writer
+
+视觉识别：
+VGG19
+https://www.tensorflow.org/api_docs/python/tf/keras/applications/vgg19
