@@ -20,14 +20,15 @@ from  PIL import Image as PILImage
 # from PIL import GifImagePlugin
 # GifImagePlugin.LOADING_STRATEGY = GifImagePlugin.LoadingStrategy.RGB_ALWAYS
 
+import json
+import requests
 
 import random
 import numpy as np
 
-from tensorflow.keras.applications.vgg19 import VGG19
 from tensorflow.keras.applications.vgg19 import preprocess_input, decode_predictions
 
-model = VGG19(weights='imagenet')
+use_tf_serving = True
 
 cat_breeds = [
     "tabby",
@@ -47,6 +48,13 @@ lines_when_seeing_cats = [
     "好可爱，是御坂发现的哦，と，御坂如此宣扬自己的功绩",
     "喵···"
     ]
+
+if use_tf_serving:
+    MODEL_DIR = "vgg_serving"
+else:
+    from tensorflow.keras.applications.vgg19 import VGG19
+    
+    model = VGG19(weights='imagenet')
 
 channel = Channel.current()
 
@@ -78,7 +86,21 @@ async def see_a_cat(app: Ariadne, member: Member, group: Group, message: Message
         img_array = np.expand_dims(img_array, axis=0)
         img_array = preprocess_input(img_array)
 
-        preds = model.predict(img_array)
+        preds = None
+
+        if use_tf_serving:
+            print("Using Tensorflow Serving:")
+
+            MODEL_DIR = "vgg_serving"
+            data = json.dumps({"instances": img_array.tolist()})
+            json_response = requests.post(f"http://localhost:8501/v1/models/{MODEL_DIR}:predict", data=data)
+
+            prediction_list = json.loads(json_response.text)['predictions']
+            # convert list to array
+            preds = np.asarray(prediction_list)
+        else:
+            preds = model.predict(img_array)
+            
         # decode the results into a list of tuples (class, description, probability)
         # (one such list for each sample in the batch)
         labels_top = decode_predictions(preds, top=3)[0]
