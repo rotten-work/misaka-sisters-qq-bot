@@ -26,6 +26,8 @@ with saya.module_context():
     for module_info in pkgutil.iter_modules(["modules"]):
         if module_info.name.startswith("_"):
             continue
+        if module_info.name == "test":
+            continue
         saya.require("modules." + module_info.name)
 
 app.launch_blocking()

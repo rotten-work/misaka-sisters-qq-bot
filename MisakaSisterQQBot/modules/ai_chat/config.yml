@@ -1,0 +1,12 @@
+# 图灵机器人（http://www.turingapi.com/）
+turing:
+  # url为接口地址，key为apikey
+  url: http://openapi.turingapi.com/openapi/api/v2
+  key: 
+
+# 百度AI开放平台
+baidu:
+  # 你的 APPID AK SK
+  app_id: 
+  api_key: 
+  secret_key: 

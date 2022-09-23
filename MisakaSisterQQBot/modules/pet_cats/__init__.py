@@ -28,7 +28,7 @@ import numpy as np
 
 from tensorflow.keras.applications.vgg19 import preprocess_input, decode_predictions
 
-use_tf_serving = True
+use_tf_serving = False
 
 cat_breeds = [
     "tabby",
@@ -55,6 +55,7 @@ else:
     from tensorflow.keras.applications.vgg19 import VGG19
     
     model = VGG19(weights='imagenet')
+    # Probably we can feed fake data to model.predict to preload cuDNN to increase performance
 
 channel = Channel.current()
 
