@@ -23,7 +23,6 @@ from  PIL import Image as PILImage
 import json
 import requests
 
-import random
 import numpy as np
 
 from tensorflow.keras.applications.vgg19 import preprocess_input, decode_predictions
@@ -48,6 +47,8 @@ lines_when_seeing_cats = [
     "好可爱，是御坂发现的哦，と，御坂如此宣扬自己的功绩",
     "喵···"
     ]
+
+response_id = 0
 
 if use_tf_serving:
     MODEL_DIR = "vgg_serving"
@@ -115,10 +116,11 @@ async def see_a_cat(app: Ariadne, member: Member, group: Group, message: Message
 
         print("Is it a cat?", is_a_cat)
 
+    global response_id
+
     if (is_a_cat):
-        idx = random.randint(0, 1)
-        gif_filename = emoji_gif_filenames[idx]
-        line = lines_when_seeing_cats[idx]
+        gif_filename = emoji_gif_filenames[response_id]
+        line = lines_when_seeing_cats[response_id]
 
         current_dir = pathlib.Path(__file__).parent.resolve()
         gif_path = pathlib.Path(current_dir, gif_filename)
@@ -129,6 +131,9 @@ async def see_a_cat(app: Ariadne, member: Member, group: Group, message: Message
             img_elem,
             Plain(line)
         )
+
+        response_id += 1
+        response_id %= 2
         
         await app.sendGroupMessage(
             group,
