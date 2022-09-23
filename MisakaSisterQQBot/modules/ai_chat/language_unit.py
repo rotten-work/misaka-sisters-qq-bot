@@ -49,9 +49,17 @@ misaka_catchphrases = [
     "御坂如此述说。"
 ]
 
+temp_characters = "@#￥"
+
 def post_process(response: str):
     processed_resp = response
+
+    # Only replace '我' with '御坂' when it is not '我们'
+    # Replace '我们' with temp characters and replace '我' with '御坂', then replace temp characters with '我们'
+    processed_resp = processed_resp.replace("我们", temp_characters)
     processed_resp = processed_resp.replace("我", misaka_name)
+    processed_resp = processed_resp.replace(temp_characters, "我们")
+
     processed_resp = processed_resp.replace("人家", misaka_name)
     processed_resp = processed_resp.replace("伦家", misaka_name)
 
@@ -86,4 +94,10 @@ if __name__ == "__main__":
 
     print("processed text:")
     print(processed_resp)
+
+    # Test for sentences including '我们'
+    test_1 = "我们一起去吃我做的饭吧！"
+    print(test_1)
+    processed_test_1 = post_process(test_1)
+    print(processed_test_1)
 
