@@ -126,7 +126,7 @@ async def see_a_cat(app: Ariadne, member: Member, group: Group, message: Message
         gif_path = pathlib.Path(current_dir, gif_filename)
 
         img_elem = Image(path=gif_path)
-        message = MessageChain.create(
+        message = MessageChain(
             At(member),
             img_elem,
             Plain(line)
@@ -135,7 +135,7 @@ async def see_a_cat(app: Ariadne, member: Member, group: Group, message: Message
         response_id += 1
         response_id %= 2
         
-        await app.sendGroupMessage(
+        await app.send_group_message(
             group,
             message
         )

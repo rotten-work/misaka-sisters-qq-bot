@@ -106,11 +106,11 @@ async def respond(app: Ariadne, member: Member, group: Group, message: MessageCh
         
         print(random_emoticon_path)
         if random_emoticon_path is None:
-            await app.sendMessage(
+            await app.send_message(
                 group,
-                MessageChain.create([At(member), Plain(f" {processed_resp}"),]))
+                MessageChain([At(member), Plain(f" {processed_resp}"),]))
         else:
             img_elem = Image(path=random_emoticon_path)
-            await app.sendMessage(
+            await app.send_message(
                 group,
-                MessageChain.create([At(member), img_elem, Plain(f" {processed_resp}"),]))
+                MessageChain([At(member), img_elem, Plain(f" {processed_resp}"),]))

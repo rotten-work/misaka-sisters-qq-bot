@@ -27,35 +27,35 @@ async def test(app: Ariadne, member: Member, group: Group, message: MessageChain
         subString = "御坂妹妹好"
         if (subString in fullString):
             if (member.id == 1078268141):
-                await app.sendMessage(
+                await app.send_message(
                     group,
-                    MessageChain.create([At(member), Plain(" 姐姐大人好，と，御坂压抑不住见到姐姐大人激动的心情，兴奋地说道"),
+                    MessageChain([At(member), Plain(" 姐姐大人好，と，御坂压抑不住见到姐姐大人激动的心情，兴奋地说道"),
                         Image(path=Path("data_test", "happy.jpg"))])
                 )
             elif (member.id == 469140955):
-                await app.sendMessage(
+                await app.send_message(
                     group,
-                    MessageChain.create([At(member), Plain(" 啊，是白吃的大儿子，と，御坂迅速地反应道")])
+                    MessageChain([At(member), Plain(" 啊，是白吃的大儿子，と，御坂迅速地反应道")])
                 )
             else:
-                await app.sendMessage(
+                await app.send_message(
                     group,
-                    MessageChain.create([At(member), Plain(" 请问你是谁，と，御坂歪着脑袋，警惕地打量着眼前的这个陌生人，困惑地询问道"),
+                    MessageChain([At(member), Plain(" 请问你是谁，と，御坂歪着脑袋，警惕地打量着眼前的这个陌生人，困惑地询问道"),
                         Image(path=Path("data_test", "confused.png"))])
                 )
 
         subString = "请问coh2这个游戏怎么样"
         if (subString in fullString):
-            await app.sendMessage(
+            await app.send_message(
                 group,
-                MessageChain.create([At(member), Plain(" 盟棍连，盟军op，建议德棍uninstall，と，御坂通过御坂网络计算模拟分析后，作出了客观且准确的评价，并给出了中肯的建议")])
+                MessageChain([At(member), Plain(" 盟棍连，盟军op，建议德棍uninstall，と，御坂通过御坂网络计算模拟分析后，作出了客观且准确的评价，并给出了中肯的建议")])
             )
 
         subString = "白吃是谁"
         if (subString in fullString):
-            await app.sendMessage(
+            await app.send_message(
                 group,
-                MessageChain.create([At(member), Plain(" 是炸鸡的爸爸，と，御坂叹了口气，摇了摇头，因竟然有人不知道白吃是谁而惊讶地回答道"),
+                MessageChain([At(member), Plain(" 是炸鸡的爸爸，と，御坂叹了口气，摇了摇头，因竟然有人不知道白吃是谁而惊讶地回答道"),
                     Image(path=Path("data_test", "sigh.png"))])
             )
 
@@ -69,15 +69,15 @@ async def test(app: Ariadne, member: Member, group: Group, message: MessageChain
                         target=469140955,
                         senderName="菊花月下",
                         time=datetime.now(),
-                        message=MessageChain.create(["我是白吃的大儿子"]) 
+                        message=MessageChain(["我是白吃的大儿子"]) 
                     )
             ]
 
-            message = MessageChain.create(Forward(nodeList=fwd_nodeList))
-            await app.sendMessage(group, message)
-            await app.sendMessage(
+            message = MessageChain(Forward(nodeList=fwd_nodeList))
+            await app.send_message(group, message)
+            await app.send_message(
                 group, 
-                MessageChain.create([At(469140955), Plain(" do, 御坂强忍住不笑"), Image(path=Path("data_test", "giggle.png"))])
+                MessageChain([At(469140955), Plain(" do, 御坂强忍住不笑"), Image(path=Path("data_test", "giggle.png"))])
             )
     
     message_str = str(message.include(At, Plain))
@@ -88,9 +88,9 @@ async def test(app: Ariadne, member: Member, group: Group, message: MessageChain
         contain_key_word("盟军", message_str) or
         contain_key_word("德军", message_str) or
         re.match(r'[cC][oO][hH]2?', message_str)):
-        await app.sendMessage(
+        await app.send_message(
             group,
-            MessageChain.create([At(member), 
+            MessageChain([At(member), 
             Plain(" 盟棍连，盟军op，建议德棍uninstall，と，御坂通过御坂网络计算模拟分析后，作出了客观且准确的评价，并给出了中肯的建议"),
             Image(path=Path("data_test", "adorkable.jpg"))])
         )
@@ -99,7 +99,7 @@ async def test(app: Ariadne, member: Member, group: Group, message: MessageChain
 async def nudged(app: Ariadne, event: NudgeEvent):
     if event.context_type == "group":
         if (event.target == app.account):            
-            await app.sendGroupMessage(
+            await app.send_group_message(
                 event.group_id,
-                MessageChain.create("检体番号：10032")
+                MessageChain("检体番号：10032")
         )
