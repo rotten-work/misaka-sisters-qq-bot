@@ -55,62 +55,105 @@ angry_emoticon_paths = get_file_paths(ANGRY_EMOTICONS_DIR)
 # print(positive_main_emoticon_paths)
 # print(angry_emoticon_paths)
 
+from .misaka_writer_V2 import generate
+
 @channel.use(
     ListenerSchema(
         listening_events=[GroupMessage]))
 async def respond(app: Ariadne, member: Member, group: Group, message: MessageChain):
     if At(app.account) in message:
         plain_string = str(message.include(At, Plain))
-        response = language_unit.get_chat_result(plain_string, config['turing']['url'], config['turing']['key'])
 
-        processed_resp = language_unit.post_process(response)
+        use_misaka_writer = True
+        if use_misaka_writer:
+            import time
+            text=plain_string.replace( '氼。','\n')
+            start=time.time()
 
-        """ 你的 APPID AK SK """
-        APP_ID = config['baidu']['app_id']
-        API_KEY = config['baidu']['api_key']
-        SECRET_KEY = config['baidu']['secret_key']
+            nums=1#开头生成多个下文
+            k=0.8#搜索窗口
+            batch_size=32
+            max_len=32#最大长度
+            repeat_punish=0.99#惩罚因子
 
-        sentiment_res = sentiment_unit.get_sentiment_result(response, str(APP_ID), API_KEY, SECRET_KEY)
-        print(sentiment_res)
+            #输入，建议开头字数在50字到200字之间
+            result=generate.writer([text.replace('\n', '氼')],#文本数据就是上面的data
+                        nums=nums,#输入要生成几个文本
+                        k=k,
+                        batch_size=batch_size,
+                        max_len=max_len,
+                        repeat_punish=repeat_punish)#检查重复解码
+            end=time.time()
 
-        # Parse sentiment result
-        sentiment_items = sentiment_res['items']
+            s=''
+            for t in text.split('\n'):
+                s+='\t'+t+'\n'
+            text=s
+            for i in range(nums):
+                print(text)
+                print('*******************************************************************************')
+                for t in result[i].split('氼'):
+                    print('\t'+t)
+                print('*******************************************************************************')
+            print('消耗时间'+str(end-start))
 
-        item = None
-        for current_item in sentiment_items:
-            if item is not None:
-                if current_item['prob'] >= item['prob']:
-                    item = current_item
-            else:
-                item = current_item
-        
-        prob = item['prob']
-        label = item['label']
-        subitems = item['subitems']
+            response = result[0].replace('氼', '\n')
 
-        postive_label = sentiment_unit.postive_label
-        negative_label = sentiment_unit.negative_label
-
-        random_emoticon_path = None
-        if prob >= prob_min_sentiment:
-            if label == postive_label:
-                print("Show positive emoticon")
-                random_emoticon_path = random.choice(positive_main_emoticon_paths)
-            elif label == negative_label:
-                for subitem in subitems:
-                    if (subitem['label'] == 'angry' and
-                        subitem['prob'] >= prob_min_angry):
-                        print("Show angry negative emoticon")
-                        random_emoticon_path = random.choice(angry_emoticon_paths)
-                        break
-        
-        print(random_emoticon_path)
-        if random_emoticon_path is None:
             await app.send_message(
                 group,
-                MessageChain([At(member), Plain(f" {processed_resp}"),]))
+                MessageChain([At(member), Plain(f" {response}"),]))
+
         else:
-            img_elem = Image(path=random_emoticon_path)
-            await app.send_message(
-                group,
-                MessageChain([At(member), img_elem, Plain(f" {processed_resp}"),]))
+            response = language_unit.get_chat_result(plain_string, config['turing']['url'], config['turing']['key'])
+
+            processed_resp = language_unit.post_process(response)
+
+            """ 你的 APPID AK SK """
+            APP_ID = config['baidu']['app_id']
+            API_KEY = config['baidu']['api_key']
+            SECRET_KEY = config['baidu']['secret_key']
+
+            sentiment_res = sentiment_unit.get_sentiment_result(response, str(APP_ID), API_KEY, SECRET_KEY)
+            print(sentiment_res)
+
+            # Parse sentiment result
+            sentiment_items = sentiment_res['items']
+
+            item = None
+            for current_item in sentiment_items:
+                if item is not None:
+                    if current_item['prob'] >= item['prob']:
+                        item = current_item
+                else:
+                    item = current_item
+            
+            prob = item['prob']
+            label = item['label']
+            subitems = item['subitems']
+
+            postive_label = sentiment_unit.postive_label
+            negative_label = sentiment_unit.negative_label
+
+            random_emoticon_path = None
+            if prob >= prob_min_sentiment:
+                if label == postive_label:
+                    print("Show positive emoticon")
+                    random_emoticon_path = random.choice(positive_main_emoticon_paths)
+                elif label == negative_label:
+                    for subitem in subitems:
+                        if (subitem['label'] == 'angry' and
+                            subitem['prob'] >= prob_min_angry):
+                            print("Show angry negative emoticon")
+                            random_emoticon_path = random.choice(angry_emoticon_paths)
+                            break
+            
+            print(random_emoticon_path)
+            if random_emoticon_path is None:
+                await app.send_message(
+                    group,
+                    MessageChain([At(member), Plain(f" {processed_resp}"),]))
+            else:
+                img_elem = Image(path=random_emoticon_path)
+                await app.send_message(
+                    group,
+                    MessageChain([At(member), img_elem, Plain(f" {processed_resp}"),]))
